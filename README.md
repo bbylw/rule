@@ -6,8 +6,8 @@
 
 ### 配置文件
 
-- **sinbreak.ini** - OpenClash 配置文件模板
-- **sinbreak-clash-android.ini** - Clash for Android 配置文件模板
+- **sinbreak.ini** - OpenClash 配置文件模板（用于 OpenWrt 上的 OpenClash）
+- **sinbreak-clash-android.ini** - Clash for Android 配置文件模板（用于 Android 手机上的 Clash for Android 和 Mac 上的 QuanX）
 
 ### 规则集文件
 
@@ -20,13 +20,13 @@
 
 ### 本地 subconverter 地址
 
-```
+```text
 http://xxx.xxx.xxx.xxx:25500/sub
 ```
 
 ### 转换链接格式
 
-```
+```text
 http://xxx.xxx.xxx.xxx:25500/sub?target={目标格式}&url={订阅链接}&config={配置文件}
 ```
 
@@ -44,13 +44,13 @@ http://xxx.xxx.xxx.xxx:25500/sub?target={目标格式}&url={订阅链接}&config
 
 #### OpenClash (Clash 格式)
 
-```
+```text
 http://xxx.xxx.xxx.xxx:25500/sub?target=clash&url=[订阅地址，需要URL转码]&config=https%3A%2F%2Fraw.githubusercontent.com%2Fjs882829%2Frule%2Fmaster%2Fsinbreak.ini
 ```
 
 #### Clash for Android 格式
 
-```
+```text
 http://xxx.xxx.xxx.xxx:25500/sub?target=clash&url=[订阅地址，需要URL转码]&config=https%3A%2F%2Fraw.githubusercontent.com%2Fjs882829%2Frule%2Fmaster%2Fsinbreak-clash-android.ini
 ```
 
@@ -60,7 +60,7 @@ http://xxx.xxx.xxx.xxx:25500/sub?target=clash&url=[订阅地址，需要URL转�
 
 #### OpenClash
 
-```
+```text
 http://xxx.xxx.xxx.xxx:25500/sub?target=clash&url=[订阅地址，需要URL转码]&config=sinbreak.ini
 ```
 
@@ -68,48 +68,168 @@ http://xxx.xxx.xxx.xxx:25500/sub?target=clash&url=[订阅地址，需要URL转�
 
 配置文件支持以下功能：
 
-- ✅ 自动测速
-- ✅ 应用分流
-- ✅ 增强中国 IP 段
+- ✅ 自动测速（使用 gstatic.com/generate_204 进行节点测速）
+- ✅ 应用分流（支持 AI、YouTube、Netflix、TikTok、GitHub、Google、Telegram 等）
+- ✅ 增强中国 IP 段（使用 GEOSITE/GEOIP 规则）
 - ✅ 增强国外 GFW 列表
-- ✅ 节点过滤
+- ✅ 节点过滤（自动清洗说明性、广告性节点）
+- ✅ 节点清洗（自动过滤流量、套餐、到期、防失联等说明性节点）
 - ✅ DNS 防泄露（95% 常用网站已做到防泄露）
+- ✅ GEOSITE/GEOIP 规则支持（内联规则，提高匹配速度）
+- ✅ 冷门节点组（排除五大区后的其他节点）
 
 ## 策略组说明
 
 配置文件包含以下策略组：
 
-- **🚀 节点选择** - 主节点选择策略组
-- **♻️ 自动选择** - 自动选择最快节点
-- **🔯 故障转移** - 按地区故障转移（香港、日本、新加坡、美国）
+### 主要策略组
+
+- **🚀 节点选择** - 主节点选择策略组（包含所有节点类型）
+- **🎯 全球直连** - 直连策略（国内网站直连）
+- **🐟 漏网之鱼** - 默认策略（未匹配规则的流量）
+
+### 自动选择策略组
+
+- **♻️ 自动选择** - 自动选择最快节点（排除游戏节点）
+- **♻️ 自动选择香港** - 自动选择最快香港节点
+- **♻️ 自动选择美国** - 自动选择最快美国节点
+- **♻️ 自动选择日本** - 自动选择最快日本节点
+- **♻️ 自动选择新加坡** - 自动选择最快新加坡节点
+- **♻️ 自动选择游戏** - 自动选择游戏节点
+- **♻️ YouTube自动选择香港** - YouTube 专用香港节点自动选择
+
+### 地区节点筛选
+
 - **🇭🇰 香港节点** - 香港节点筛选
 - **🇯🇵 日本节点** - 日本节点筛选
 - **🇸🇬 新加坡节点** - 新加坡节点筛选
 - **🇺🇲 美国节点** - 美国节点筛选
-- **🔮 负载均衡** - 负载均衡策略组
-- **🐸 手动切换** - 手动选择节点
-- **🎯 全球直连** - 直连策略
-- **🐟 漏网之鱼** - 默认策略
+- **🧊 冷门节点** - 排除五大区（HK/JP/TW/US/SG）后的其他节点
+- **🌐 其他地区** - 其他地区节点筛选
+
+### 高级策略组
+
+- **🔯 故障转移** - 按地区故障转移（香港、日本、新加坡、美国）
+- **🔮 负载均衡** - 负载均衡策略组（美国、香港）
+- **🐸 手动切换** - 手动选择节点（显示所有节点）
+
+### 应用专用策略组
+
+- **🤖 AI** - AI 服务策略组（OpenAI、Bard、Claude 等）
+- **📹 YouTube** - YouTube 策略组
+- **🎥 Netflix** - Netflix 策略组
+- **🎵 TikTok** - TikTok 策略组
+- **👨🏿‍💻 GitHub** - GitHub 策略组
+- **🍀 Google** - Google 服务策略组
+- **🪟 Microsoft** - Microsoft 服务策略组
+- **🍎 Apple** - Apple 服务策略组
+- **📲 Telegram** - Telegram 策略组
+- **🎮 游戏平台** - 游戏平台策略组（Steam、Epic、Origin 等）
+- **💧 Copilot** - Copilot 策略组
+- **🐬 OneDrive** - OneDrive 策略组
+- **📢 FCM** - Google FCM 策略组
+- **♻️ Speedtest** - 测速工具策略组
+- **🎞️ 国内媒体** - 国内媒体策略组
+- **🌍 国外媒体** - 国外媒体策略组
 
 ## 规则集说明
 
-配置文件使用以下规则集：
+配置文件使用以下规则集，采用混合规则源（外部列表 + GEOSITE/GEOIP 内联规则）：
+
+### 直连规则
 
 - **🎯 全球直连** - 中国域名和 IP 直连规则
+  - 私网直连（GEOSITE/GEOIP private）
+  - 国内直连（GEOSITE/GEOIP cn）
+  - 自定义直连列表
+  - 局域网规则
+  - Steam 中国区规则
+  - 下载类规则
+
+### 代理规则
+
 - **🚀 节点选择** - 需要代理的域名规则
-- **🤖 AI** - AI 服务规则（OpenAI、Bard、Claude 等）
+  - 自定义代理列表
+  - GFW 列表
+  - 地理位置非中国规则（GEOSITE geolocation-!cn）
+
+### 应用规则
+
+- **🤖 AI** - AI 服务规则
+  - OpenAI、Bard、Claude 等（外部列表）
+  - OpenAI GEOSITE 规则
+  - AI 类别规则（category-ai-!cn）
+
 - **📹 YouTube** - YouTube 规则
+  - 外部列表 + GEOSITE youtube
+
 - **🎥 Netflix** - Netflix 规则
+  - 外部列表 + GEOSITE/GEOIP netflix
+
 - **🎵 TikTok** - TikTok 规则
+  - 外部列表 + GEOSITE/GEOIP tiktok
+
 - **👨🏿‍💻 GitHub** - GitHub 规则
+  - 外部列表 + GEOSITE/GEOIP github
+
 - **🍀 Google** - Google 服务规则
+  - 外部列表 + GEOSITE/GEOIP google
+
+- **🪟 Microsoft** - Microsoft 服务规则
+  - 外部列表 + GEOSITE/GEOIP microsoft
+
+- **🍎 Apple** - Apple 服务规则
+  - 外部列表 + GEOSITE apple
+
 - **📲 Telegram** - Telegram 规则
-- **🎮 游戏平台** - 游戏平台规则（Steam、Epic、Origin 等）
-- **🍃 应用净化** - 广告拦截规则
+  - 外部列表 + GEOSITE/GEOIP telegram
+
+- **🎮 游戏平台** - 游戏平台规则
+  - Steam、Epic、Origin、Sony、Nintendo
+
+- **💧 Copilot** - Copilot 规则（Bing）
+
+- **🐬 OneDrive** - OneDrive 规则
+
+- **📢 FCM** - Google FCM 规则
+
+- **♻️ Speedtest** - 测速工具规则
+
+- **🎞️ 国内媒体** - 国内媒体规则
+
+- **🌍 国外媒体** - 国外媒体规则
+
+### 拦截规则
+
+- **🍃 应用净化** - 应用净化规则（广告拦截）
 - **🛡️ 隐私防护** - 隐私保护规则
 
-## 相关链接
+### 规则优先级
 
-- [subconverter 项目](https://github.com/tindy2013/subconverter)
-- [ACL4SSR 规则集](https://github.com/ACL4SSR/ACL4SSR)
-- [blackmatrix7 规则集](https://github.com/blackmatrix7/ios_rule_script)
+规则按以下优先级匹配（自上而下）：
+
+1. 私网直连（GEOSITE/GEOIP private）
+2. 国内直连（GEOSITE/GEOIP cn）
+3. 自定义规则列表
+4. 应用分流规则
+5. 地理位置规则
+6. 漏网之鱼（FINAL）
+
+## 节点管理
+
+### 节点清洗
+
+配置文件自动过滤以下类型的节点名称：
+
+- 流量、套餐、到期、剩余、重置
+- 官网、网站、最新网址、防失联、失联
+- 公告、通知、TG、Telegram、电报、群、频道
+- 说明、使用说明、QQ群、客服、工单、订阅
+- Expire、Traffic、Reset、Remaining、Official、Website
+
+### 节点分组
+
+- **地区节点**：香港、日本、新加坡、美国
+- **冷门节点**：排除五大区（HK/JP/TW/US/SG）后的其他节点
+- **游戏节点**：专门用于游戏的节点
+- **Large 节点**：大流量节点（用于故障转移和自动选择）
