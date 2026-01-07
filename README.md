@@ -1,6 +1,6 @@
 # rule
 
-规则集和配置文件仓库，用于 Clash （openclash/android）等代理工具。
+规则集和配置文件仓库，用于 Clash （openclash/clash for android）/ quanx等代理工具。
 
 ## 文件说明
 
@@ -46,19 +46,19 @@ http://xxx.xxx.xxx.xxx:25500/sub?target={目标格式}&url={订阅链接}&config
 #### OpenClash (Clash 格式)
 
 ```text
-http://xxx.xxx.xxx.xxx:25500/sub?target=clash&url=[订阅地址，需要URL转码]&config=https%3A%2F%2Fraw.githubusercontent.com%2Fjs882829%2Frule%2Fmaster%2Fsinbreak.ini
+http://xxx.xxx.xxx.xxx:25500/sub?target=clash&url=[订阅地址，需要URL转码]&config=https%3A%2F%2Fraw.githubusercontent.com%2Fjs882829%2Frule%2Fmaster%2Fsinbreak.ini&emoji=true&udp=true
 ```
 
 #### Clash for Android 格式
 
 ```text
-http://xxx.xxx.xxx.xxx:25500/sub?target=clash&url=[订阅地址，需要URL转码]&config=https%3A%2F%2Fraw.githubusercontent.com%2Fjs882829%2Frule%2Fmaster%2Fsinbreak-clash-android.ini
+http://xxx.xxx.xxx.xxx:25500/sub?target=clash&url=[订阅地址，需要URL转码]&config=https%3A%2F%2Fraw.githubusercontent.com%2Fjs882829%2Frule%2Fmaster%2Fsinbreak-clash-android.ini&emoji=true&udp=true
 ```
 
 #### QuanX 格式
 
 ```text
-http://xxx.xxx.xxx.xxx:25500/sub?target=quanx&url=[订阅地址，需要URL转码]&config=https%3A%2F%2Fraw.githubusercontent.com%2Fjs882829%2Frule%2Fmaster%2Fsinbreak-quanx.ini
+http://xxx.xxx.xxx.xxx:25500/sub?target=quanx&url=[订阅地址，需要URL转码]&config=https%3A%2F%2Fraw.githubusercontent.com%2Fjs882829%2Frule%2Fmaster%2Fsinbreak-quanx.ini&emoji=true&udp=true
 ```
 
 ### 本地配置文件路径
@@ -68,7 +68,7 @@ http://xxx.xxx.xxx.xxx:25500/sub?target=quanx&url=[订阅地址，需要URL转�
 #### OpenClash
 
 ```text
-http://xxx.xxx.xxx.xxx:25500/sub?target=clash&url=[订阅地址，需要URL转码]&config=sinbreak.ini
+http://xxx.xxx.xxx.xxx:25500/sub?target=clash&url=[订阅地址，需要URL转码]&config=sinbreak.ini&emoji=true&udp=true
 ```
 
 ## 功能特性
