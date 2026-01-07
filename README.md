@@ -7,7 +7,8 @@
 ### 配置文件
 
 - **sinbreak.ini** - OpenClash 配置文件模板（用于 OpenWrt 上的 OpenClash）
-- **sinbreak-clash-android.ini** - Clash for Android 配置文件模板（用于 Android 手机上的 Clash for Android 和 Mac 上的 QuanX）
+- **sinbreak-clash-android.ini** - Clash for Android 配置文件模板（用于 Android 手机上的 Clash for Android）
+- **sinbreak-quanx.ini** - QuanX 专用配置文件模板（用于 Mac/iOS 上的 Quantumult X，移除 GEOSITE 规则）
 
 ### 规则集文件
 
@@ -54,6 +55,12 @@ http://xxx.xxx.xxx.xxx:25500/sub?target=clash&url=[订阅地址，需要URL转�
 http://xxx.xxx.xxx.xxx:25500/sub?target=clash&url=[订阅地址，需要URL转码]&config=https%3A%2F%2Fraw.githubusercontent.com%2Fjs882829%2Frule%2Fmaster%2Fsinbreak-clash-android.ini
 ```
 
+#### QuanX 格式
+
+```text
+http://xxx.xxx.xxx.xxx:25500/sub?target=quanx&url=[订阅地址，需要URL转码]&config=https%3A%2F%2Fraw.githubusercontent.com%2Fjs882829%2Frule%2Fmaster%2Fsinbreak-quanx.ini
+```
+
 ### 本地配置文件路径
 
 如果配置文件放在本地 subconverter 的工作目录下：
@@ -76,6 +83,7 @@ http://xxx.xxx.xxx.xxx:25500/sub?target=clash&url=[订阅地址，需要URL转�
 - ✅ 节点清洗（自动过滤流量、套餐、到期、防失联等说明性节点）
 - ✅ DNS 防泄露（95% 常用网站已做到防泄露）
 - ✅ GEOSITE/GEOIP 规则支持（内联规则，提高匹配速度）
+  - 注意：QuanX 不支持 GEOSITE，请使用 `sinbreak-quanx.ini`
 - ✅ 冷门节点组（排除五大区后的其他节点）
 
 ## 策略组说明
@@ -214,6 +222,22 @@ http://xxx.xxx.xxx.xxx:25500/sub?target=clash&url=[订阅地址，需要URL转�
 4. 应用分流规则
 5. 地理位置规则
 6. 漏网之鱼（FINAL）
+
+## 配置文件说明
+
+### QuanX 专用配置
+
+**sinbreak-quanx.ini** 是专为 Quantumult X 设计的配置文件，主要区别：
+
+- ❌ **移除所有 GEOSITE 规则**：QuanX 不支持 GEOSITE 内联规则
+- ✅ **保留 GEOIP 规则**：QuanX 支持 GEOIP 规则
+- ✅ **保留所有外部规则列表**：使用外部规则列表文件
+- ✅ **功能保持一致**：策略组和其他功能与 Clash 版本相同
+
+**使用建议**：
+
+- Clash/OpenClash 用户：使用 `sinbreak.ini` 或 `sinbreak-clash-android.ini`
+- QuanX 用户：必须使用 `sinbreak-quanx.ini`
 
 ## 节点管理
 
