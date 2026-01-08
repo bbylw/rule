@@ -147,10 +147,17 @@ http://xxx.xxx.xxx.xxx:25500/sub?target=clash&url=[订阅地址，需要URL转�
 ### 直连规则
 
 - **🎯 全球直连** - 中国域名和 IP 直连规则
+  - **局域网IP段直连**（防止DNS解析）
+    - 192.168.0.0/16（私有网络）
+    - 10.0.0.0/8（私有网络）
+    - 172.16.0.0/12（私有网络）
+    - 127.0.0.0/8（本地回环）
+    - 169.254.0.0/16（链路本地）
+    - 使用 `no-resolve` 标志防止DNS解析，避免局域网IP被解析为代理IP（如198.18.x.x）
   - 私网直连（GEOSITE/GEOIP private）
   - 国内直连（GEOSITE/GEOIP cn）
   - 自定义直连列表
-  - 局域网规则
+  - 局域网规则（LocalAreaNetwork.list）
   - Steam 中国区规则
   - 下载类规则
 
@@ -216,12 +223,15 @@ http://xxx.xxx.xxx.xxx:25500/sub?target=clash&url=[订阅地址，需要URL转�
 
 规则按以下优先级匹配（自上而下）：
 
-1. 私网直连（GEOSITE/GEOIP private）
-2. 国内直连（GEOSITE/GEOIP cn）
-3. 自定义规则列表
-4. 应用分流规则
-5. 地理位置规则
-6. 漏网之鱼（FINAL）
+1. **局域网IP段直连**（Direct.list中的IP-CIDR规则，带no-resolve标志）
+2. 私网直连（GEOSITE/GEOIP private）
+3. 国内直连（GEOSITE/GEOIP cn）
+4. 自定义规则列表
+5. 应用分流规则
+6. 地理位置规则
+7. 漏网之鱼（FINAL）
+
+**注意**：局域网IP段规则必须在最前面，确保在DNS解析之前就匹配到，避免被fake-ip处理。
 
 ## 配置文件说明
 
@@ -257,3 +267,52 @@ http://xxx.xxx.xxx.xxx:25500/sub?target=clash&url=[订阅地址，需要URL转�
 - **冷门节点**：排除五大区（HK/JP/TW/US/SG）后的其他节点
 - **游戏节点**：专门用于游戏的节点
 - **Large 节点**：大流量节点（用于故障转移和自动选择）
+
+## 局域网IP和DNS配置说明
+
+### 问题说明
+
+在某些情况下，OpenClash可能会对局域网IP地址（如192.168.x.x）进行DNS解析，导致返回代理IP（如198.18.9.45）。`198.18.0.0/15` 是RFC 2544定义的基准测试IP段，通常被代理工具用作fake-ip范围。
+
+### 解决方案
+
+配置文件已内置以下保护机制：
+
+1. **Direct.list中的局域网IP段规则**：
+   - 在 `Direct.list` 文件开头添加了明确的局域网IP段规则
+   - 使用 `no-resolve` 标志防止DNS解析
+   - 规则顺序优先，确保在DNS解析前匹配
+
+2. **配置文件中的私网规则**：
+   - `[]GEOSITE,private` - 匹配私有域名
+   - `[]GEOIP,private,no-resolve` - 匹配私有IP，不进行DNS解析
+
+### OpenClash DNS配置建议
+
+如果问题仍然存在，请检查OpenClash的DNS配置：
+
+1. **DNS设置**：
+   - 确保"使用本地DNS服务"已启用
+   - 检查"Fake-IP"设置，确保局域网IP不被fake-ip处理
+   - 在"DNS设置"的"自定义上游DNS服务器"中，确保局域网IP段不被解析
+
+2. **DNS服务器配置**：
+   - 如果DNS服务器（如192.168.50.253）本身配置了fake-ip，需要修改DNS服务器配置
+   - 确保DNS服务器不会将局域网IP解析为代理IP
+
+3. **验证方法**：
+   ```bash
+   # 测试局域网IP是否被正确解析
+   dig 192.168.2.70
+   # 应该返回 NXDOMAIN 或正确的IP，而不是 198.18.x.x
+   
+   # 检查DNS配置
+   scutil --dns
+   ```
+
+### 注意事项
+
+- `no-resolve` 标志非常重要，它告诉Clash不要对IP地址进行DNS解析
+- 规则顺序很重要，局域网IP规则必须在所有其他规则之前
+- 如果使用自定义DNS服务器，确保DNS服务器不会对局域网IP进行fake-ip处理
+- 重新生成配置后，需要重启OpenClash服务使配置生效

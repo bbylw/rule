@@ -1,5 +1,13 @@
 # 直连补充列表(国内域名不解析时，防止走代理使用)
 
+# 局域网IP段直连（防止DNS解析，避免局域网IP被解析为代理IP）
+# 这些规则必须在最前面，确保局域网IP直接匹配，不经过DNS解析
+IP-CIDR,192.168.0.0/16,no-resolve
+IP-CIDR,10.0.0.0/8,no-resolve
+IP-CIDR,172.16.0.0/12,no-resolve
+IP-CIDR,127.0.0.0/8,no-resolve
+IP-CIDR,169.254.0.0/16,no-resolve
+
 # MyList
 DOMAIN-SUFFIX,rss-node.com
 DOMAIN-SUFFIX,oray.com
